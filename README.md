@@ -1,7 +1,8 @@
 # Broadcaster
-Node app that generates and hosts HTTP Live Streams from local content using FFMpeg and ExpressJS.
+Generate and host HTTP Live Streams from local video content using FFMpeg. Broadcaster will create playlists of your video files and live stream the playlist. It will orchestrate time keeping to make sure anyone watching your stream is in the same position. If no one is watching, the timeline keeps going, just like a old school TV stations.
 
 # Prerequisites
+* Broadcaster uses FFMpeg to encode your videos to h264 for HTTP Live Streaming.
 * If you have an Nvidia GPU, it is highly recommended you have `ffmpeg` compiled with Nvidia's non-free `h264_nvenc` codec.
 * If you have an Intel CPU with Intel QuickSync, you can try the `h264_qsv` codec.
 * Without either of these, you'll have to use a software codec like `libx264` which may not be able to keep up in real time. You can set the codec in the config.txt.
