@@ -1,30 +1,25 @@
 const Log = require('./Log.js')
-const tag = __filename.split('/').pop()
-const { Segmenter } = require('../Classes/Segmenter.js')
-
-var pool = null
+const tag = 'ChannelPool'
 
 module.exports = () => {
-  return pool ? pool : pool = new ChannelPool()
+  return pool
 }
 
 class ChannelPool {
 
   constructor() {
     this.queue = []
-    Log(tag, null, 'Channel Pool created.')
+    Log(tag, 'Channel Pool created.')
   }
 
   addChannel(channel) {
     this.queue.push(channel)
-    const segmenter = new Segmenter(channel)
-    segmenter.queue=[]
-    channel.stage(segmenter)
-    Log(tag, channel, 'Added to channel pool.')
+    Log(tag, 'Added to channel pool.', channel)
   }
 
   broadcast() {
-    this.queue.forEach((channel) => channel.timeline.start())
+    this.queue.forEach(channel => channel.timeline.start())
   }
 
 }
+var pool = new ChannelPool()

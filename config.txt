@@ -1,6 +1,7 @@
 # Thanks for using Broadcaster. Configure your preferences below. Be careful!
 
-# FFMpeg Setup. Use at your own risk.
+## FFMpeg Setup. Use at your own risk.
+
 VIDEO_CODEC=h264_nvenc
 VIDEO_CRF=21
 VIDEO_FILTER=yadif
@@ -26,3 +27,6 @@ CACHE_DIR=/tmp
 
 # Log levels (verbose, silent)
 LOG_LEVEL=verbose
+
+## Frontend options
+WEB_UI_PORT=12121

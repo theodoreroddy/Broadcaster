@@ -1,30 +1,24 @@
 const Bash = require('child_process').execSync
 const Log = require('./Log.js')
-const tag = __filename.split('/').pop()
+const { CACHE_DIR } = process.env
+const tag = 'SegmenterPool'
 
 var pool = null
 
 class SegmenterPool {
 
   constructor(queue) {
-    Log(tag, null, 'Segmenter Pool created.')
+    Bash(`mkdir ${CACHE_DIR}/broadcast && mkdir ${CACHE_DIR}/broadcast/channels &`)
+    Log(tag, 'Segmenter Pool created.')
     this.queue = []
   }
 
   addSegmenter(segmenter) {
     return new Promise((resolve, reject) => {
-      segmenter.start()
       this.queue.push(segmenter)
-      Log(tag, null, 'Added to the segmenter pool.')
+      Log(tag, 'Added to the segmenter pool.')
       resolve()
     })
-  }
-
-  flush() {
-    Log(tag, null, 'Cleaning up previous session...')
-    Bash('mv channels/static . &')
-    Bash('rm -r channels/* > /dev/null &')
-    Bash('mv static channels/ &')
   }
 
 }

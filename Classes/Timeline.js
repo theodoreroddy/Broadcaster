@@ -1,5 +1,5 @@
 const Log = require('../Utilities/Log.js')
-const tag = __filename.split('/').pop()
+const tag = 'Timeline'
 
 function Timeline(startTime, started) {
 
@@ -9,7 +9,7 @@ function Timeline(startTime, started) {
   this.start = () => {
     started = true
     startTime = Date.now()
-    Log(tag, channel, 'Broadcast has begun...')
+    Log(tag, 'Broadcast has begun...', channel)
   }
 
   getTimeOffset = () => {

@@ -46,7 +46,7 @@ body {
         .forEach((button) => button.addEventListener('click', () => {
           video.src = '#';
           video.style.background = "none";
-          video.style.backgroundImage = "url('assets/static.gif')";
+          video.style.backgroundImage = "url('static.gif')";
           video.addEventListener('timeupdate', () => {
             video.style.background = "black";
             video.style.backgroundImage = "none";
@@ -72,7 +72,7 @@ body {
       document.querySelectorAll('button.channel')
         .forEach((button) => button.addEventListener('click', () => {
           video.style.background = "none";
-          video.style.backgroundImage = "url('assets/static.gif')";
+          video.style.backgroundImage = "url('static.gif')";
           window.hls.detachMedia(video);
           window.hls = new Hls();
           window.hls.addListener('hlsBufferCreated', ()=>{
