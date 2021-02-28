@@ -4,13 +4,13 @@ const { Segmenter } = require('../Classes/Segmenter.js')
 const Bash = require('child_process').execSync
 const { Timeline } = require('./Timeline.js')
 const Log = require('../Utilities/Log.js')
-const path = require('path') 
+const path = require('path')
 const tag = path.basename(__filename)
 
 function Channel(channel) {
 
   Log(tag, channel, `Building the queue...`)
-  
+
   this.timeline = new Timeline()
   this.type = channel.type
   this.name = channel.title
@@ -19,7 +19,7 @@ function Channel(channel) {
   this.currentPlaylistIndex = -1
 
   this.stage = async () => {
-
+    this.currentPlaylistIndex++
     SegmenterPool().addSegmenter(new Segmenter(this))
       .then(this.timeline.start)
       .catch(err => {

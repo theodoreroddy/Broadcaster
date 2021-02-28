@@ -1,5 +1,5 @@
 const Log = require('./Log.js')
-const path = require('path') 
+const path = require('path')
 const tag = path.basename(__filename)
 
 var pool = null
@@ -21,6 +21,6 @@ class ChannelPool {
     })
   }
   broadcast() {
-    this.queue.forEach((channel) => channel.stage())
+    this.queue.forEach((channel) => channel.start())
   }
 }

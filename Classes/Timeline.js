@@ -1,9 +1,9 @@
 const Log = require('../Utilities/Log.js')
-const path = require('path') 
+const path = require('path')
 const tag = path.basename(__filename)
 
 function Timeline(startTime, started) {
-  
+
   this.startTime = -1
   this.started = false
 

@@ -1,7 +1,7 @@
 const ChannelPool = require('./Utilities/ChannelPool.js')
 const { Channel } = require('./Classes/Channel.js')
 const Log = require('./Utilities/Log.js')
-const path = require('path') 
+const path = require('path')
 const tag = path.basename(__filename)
 const FS = require('fs')
 

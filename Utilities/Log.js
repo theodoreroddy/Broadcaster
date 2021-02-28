@@ -3,6 +3,6 @@ module.exports = async (tag, channel, message) => {
   if (process.env.LOG_LEVEL == 'verbose') {
     channel != undefined ?
       console.log(`${time}: Broadcaster | ${channel.title} | ${tag} | ${message}`)
-      : console.log(`${time}: Broadcaster | ${tag} | ${message}`) 
+      : console.log(`${time}: Broadcaster | ${tag} | ${message}`)
   }
 }

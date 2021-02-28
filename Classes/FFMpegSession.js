@@ -1,15 +1,15 @@
 const SegmenterPool = require('../Utilities/SegmenterPool.js')
 const Log = require('../Utilities/Log.js')
 const FFMpeg = require('fluent-ffmpeg')
-const path = require('path') 
+const path = require('path')
 const tag = path.basename(__filename)
 process.on('exit', SegmenterPool().flush)
 
-const { VIDEO_CODEC, 
+const { VIDEO_CODEC,
         VIDEO_CRF,
-        VIDEO_FILTER, 
-        AUDIO_CODEC, 
-        AUDIO_BITRATE, 
+        VIDEO_FILTER,
+        AUDIO_CODEC,
+        AUDIO_BITRATE,
         HLS_SEGMENT_LENGTH_SECONDS } = process.env
 
 function FFMpegSession(channel) {

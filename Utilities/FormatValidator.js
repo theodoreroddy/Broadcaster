@@ -1,5 +1,5 @@
 const Log = require('./Log.js')
-const path = require('path') 
+const path = require('path')
 const tag = path.basename(__filename)
 
 // Checks the given file against the SUPPORTED_FORMATS list
