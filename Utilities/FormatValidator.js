@@ -1,5 +1,5 @@
 const Log = require('./Log.js')
-const tag = __filename.split('/').pop()
+const tag = 'FormValidator'
 
 // Checks the given file against the SUPPORTED_FORMATS list
 module.exports = {
@@ -7,11 +7,12 @@ module.exports = {
       var valid = false
       try {
         const ext = file.split('.').pop()
-        process.env.SUPPORTED_FORMATS.split(',').forEach((format) => {
+        process.env.SUPPORTED_FORMATS.split(',')
+          .forEach(format => {
           if (ext == format) valid = true
         })
       } catch(e) {
-        Log(tag, null, `Unable to validate file format for ${file}: ${e}`)
+        Log(tag, `Unable to validate file format for ${file}: ${e}`)
       }
       return valid
     }

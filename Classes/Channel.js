@@ -4,33 +4,21 @@ const { Segmenter } = require('../Classes/Segmenter.js')
 const Bash = require('child_process').execSync
 const { Timeline } = require('./Timeline.js')
 const Log = require('../Utilities/Log.js')
-const tag = __filename.split('/').pop()
+const tag = 'Channel'
 
+function Channel(definition) {
 
-function Channel(channel) {
-
-  Log(tag, channel, `Building the queue...`)
+  Log(tag, `Building the queue...`, definition)
 
   this.timeline = new Timeline()
-  this.type = channel.type
-  this.name = channel.name
-  this.slug = channel.slug
+  this.type = definition.type
+  this.name = definition.name
+  this.slug = definition.slug
   this.queue = []
-  this.currentPlaylistIndex = -1
+  this.currentPlaylistIndex = 0
 
-  this.stage = (segmenter) => {
-
-    this.currentPlaylistIndex = this.currentPlaylistIndex + 1
-    SegmenterPool().addSegmenter(segmenter)
-      .then(this.timeline.start)
-      .catch(err => {
-        Log(tag, this, `Error adding segmenter to pool: ${err}`)
-      })
-
-  }
-
-  channel.paths.forEach((path) =>{
-
+  definition.paths.forEach(path => {
+    
     var x = 0
     Bash(`find "${path}" -type f`).toString().split('\n').forEach((file) => {
       const array = file.split('.')
@@ -38,13 +26,22 @@ function Channel(channel) {
       if (Format.isSupported(file)) this.queue.push(file)
       x++
     })
-    Log(tag, channel, `Found ${x} files in ${path}`)
+    Log(tag, `Found ${x} supported files in ${path}`, this)
 
-    if (channel.type == 'shuffle') this.queue.sort(() => Math.random() - 0.5)
+    if (definition.type == 'shuffle') this.queue.sort(() => Math.random() - 0.5)
 
   })
+  
+  this.segmenter = (() => {
+    SegmenterPool().addSegmenter(new Segmenter(this))
+    .then(data => {
+      this.timeline.start
+    }).catch(err => {
+      Log(tag, `Error adding segmenter to pool: ${err}`, this)
+    })
+  })()
 
-  Log(tag, channel, `Completed initializing ${channel.type} channel "${channel.name}" with ${this.queue.length} supported videos.`)
+  Log(tag, `Finished initializing ${definition.type} channel "${definition.name}" with ${this.queue.length} supported videos.`, this)
 
 }
 

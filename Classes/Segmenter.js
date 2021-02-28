@@ -2,20 +2,25 @@ const ChannelPool = require('../Utilities/ChannelPool.js')
 const Bash = require('child_process').execSync
 const Log = require('../Utilities/Log.js')
 const { FFMpegSession } = require('./FFMpegSession.js')
-const tag = __filename.split('/').pop()
-
+const tag = 'Segmenter'
+const { CACHE_DIR } = process.env
 
 function Segmenter(channel) {
 
-  this.start = (channel, session) => {
-      this.channel = channel
-      this.session = new FFMpegSession(this.channel.queue[this.channel.currentPlaybackIndex])
-      
-      Log(tag, this.channel, 'FFmpeg starting.')
-  }
+  Bash(`mkdir ${CACHE_DIR}/broadcast/channels/${channel.slug} &`)
+  Bash(`cp ${__dirname.replace('Classes','')}Webapp/fullscreen.html ${CACHE_DIR}/broadcast/channels/${channel.slug}/ &`)
+
+  this.channel = channel
+  this.session = new FFMpegSession(this.channel)
 
   this.flush = () => {
-    Bash(`find ./Webapp/channels/${this.channel.slug}/ -type f -mmin +100 -delete &`)
+    Bash(`find ${CACHE_DIR}/broadcast/channels/${this.channel.slug}/ -type f -mmin +100 -delete &`)
+  }
+
+  return {
+    flush: this.flush,
+    session: this.session,
+    channel: this.channel
   }
 
 }

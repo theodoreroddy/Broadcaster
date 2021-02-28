@@ -1,9 +1,7 @@
-const SegmenterPool = require('../Utilities/SegmenterPool.js')
 const Log = require('../Utilities/Log.js')
 const FFMpeg = require('fluent-ffmpeg')
-const tag = __filename.split('/').pop()
-
-process.on('exit', SegmenterPool().flush)
+const { CACHE_DIR } = process.env.SUPPORTED_FORMATS
+const tag = 'FFMpegSession'
 
 const { VIDEO_CODEC,
         VIDEO_CRF,
@@ -13,37 +11,37 @@ const { VIDEO_CODEC,
         HLS_SEGMENT_LENGTH_SECONDS } = process.env
 
 function FFMpegSession(channel) {
-    const file = channel.queue[channel.currentPlaylistIndex]
-    const slug = channel.slug
-    FFMpeg(file)
-        .addOptions([
-            `-c:v ${VIDEO_CODEC}`,
-            `-crf ${VIDEO_CRF}`,
-            `-vf ${VIDEO_FILTER}`,
-            `-g ${AUDIO_CODEC}`,
-            `-c:a ${AUDIO_BITRATE}`,
-            `-b:a ${VIDEO_CRF}`,
-            '-ac 2',
-            '-f hls',
-            `-hls_time ${HLS_SEGMENT_LENGTH_SECONDS}`,
-            '-hls_flags append_list',
-            '-hls_start_number_source datetime',
-            '-hls_playlist_type event',
-            '-sc_threshold 0'
-        ]).output(`${CACHE_DIR}/broadcaster/channels/${slug}/_.m3u8`)
-        .on('start', function() {
-            if (channel.currentPlaylistIndex == 0) channel.startTime = Date.now()
-            Log(tag, channel, `FFMpeg started encoding ${file}.`)
-        })
-        .on('end', () => {
-            channel.currentPlaylistIndex = channel.currentPlaylistIndex + 1
-            Log(tag, channel, `FFMpeg finished encoding ${file} in ${(Date.now() - start)/1000} seconds.`)
-        })
-        .on('error', function (err, stdout, stderr) {
-            channel.currentPlaylistIndex = channel.currentPlaylistIndex + 1
-            Log(tag, channel, `FFMpeg produced an error, so we're skipping to ${file}.`)
-        })
-        .run()
+    // const file = channel.queue[channel.currentPlaylistIndex]
+    // const slug = channel.slug
+    // FFMpeg(file)
+    //     .videoCodec(VIDEO_CODEC)
+    //     .videoFilters([VIDEO_FILTER])
+    //     .audioCodec(AUDIO_CODEC)
+    //     .audioBitrate(AUDIO_BITRATE)
+    //     .audioChannels(2)
+    //     .format('hls')
+    //     .addOptions([
+    //         `-crf ${VIDEO_CRF}`,
+    //         `-hls_time ${HLS_SEGMENT_LENGTH_SECONDS}`,
+    //         '-hls_flags append_list',
+    //         '-hls_start_number_source datetime',
+    //         '-hls_playlist_type event',
+    //         '-sc_threshold 0'
+    //     ]).output(`${CACHE_DIR}/broadcaster/channels/${slug}/_.m3u8`)
+    //     .on('start', function() {
+    //         if (channel.currentPlaylistIndex == 0) channel.startTime = Date.now()
+    //         Log(tag, `FFMpeg started encoding ${file}.`, channel)
+    //     })
+    //     .on('end', () => {
+    //         channel.currentPlaylistIndex++
+    //         Log(tag, `FFMpeg finished encoding ${file} in ${(Date.now() - start)/1000} seconds.`, channel)
+    //     })
+    //     .on('error', function (err, stdout, stderr) {
+    //         channel.currentPlaylistIndex++
+    //         Log(tag, `FFMpeg produced an error, so we're skipping to ${file}.`, channel)
+    //         Log(tag, err, channel)
+    //     })
+    //     .run()
 
 }
 

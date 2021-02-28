@@ -3,6 +3,6 @@
   "name": "Static",
   "slug": "static",
   "paths": [
-    "./Webapp/channels/static"
+    "./Webapp/static"
   ]
 }]
