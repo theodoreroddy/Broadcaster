@@ -1,5 +1,12 @@
 # Thanks for using Broadcaster. Configure your preferences below. Be careful!
 
+# FFMpeg Setup. Use at your own risk.
+VIDEO_CODEC=h264_nvenc
+VIDEO_CRF=21
+VIDEO_FILTER=yadif
+AUDIO_CODEC=aac
+AUDIO_BITRATE=128k
+
 # Choose the length of HTTP Live Streaming .ts clips. Apple recommends 6 seconds,
 # if you have high performance storage (i.e. ramdisk) you can go lower.
 HLS_SEGMENT_LENGTH_SECONDS=10

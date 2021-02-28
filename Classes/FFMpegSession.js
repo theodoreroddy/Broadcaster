@@ -5,26 +5,33 @@ const path = require('path')
 const tag = path.basename(__filename)
 process.on('exit', SegmenterPool().flush)
 
+const { VIDEO_CODEC, 
+        VIDEO_CRF,
+        VIDEO_FILTER, 
+        AUDIO_CODEC, 
+        AUDIO_BITRATE, 
+        HLS_SEGMENT_LENGTH_SECONDS } = process.env
+
 function FFMpegSession(channel) {
     process.on('exit', SegmenterPool().flush)
     const file = channel.queue[channel.currentPlaylistIndex].file
     const slug = channel.slug
-    FFMpeffmpeg(file)
+    FFMpeg(file)
         .addOptions([
-            '-c:v h264_nvenc',
-            '-crf 21',
-            '-vf yadif',
-            '-g 24',
-            '-c:a aac',
-            '-b:a 128k',
+            `-c:v ${VIDEO_CODEC}`,
+            `-crf ${VIDEO_CRF}`,
+            `-vf ${VIDEO_FILTER}`,
+            `-g ${AUDIO_CODEC}`,
+            `-c:a ${AUDIO_BITRATE}`,
+            `-b:a ${VIDEO_CRF}`,
             '-ac 2',
             '-f hls',
-            '-hls_time '+clipLength,
+            `-hls_time ${HLS_SEGMENT_LENGTH_SECONDS}`,
             '-hls_flags append_list',
             '-hls_start_number_source datetime',
             '-hls_playlist_type event',
             '-sc_threshold 0'
-        ]).output(`${__dirname}/Webapp/channels/${slug}/_.m3u8`)
+        ]).output(`${CACHE_DIR}/broadcaster/channels/${slug}/_.m3u8`)
         .on('start', function() {
             if (channel.currentPlaylistIndex == 0) channel.startTime = Date.now()
             Log(tag, channel, `FFMpeg started encoding ${file}.`)

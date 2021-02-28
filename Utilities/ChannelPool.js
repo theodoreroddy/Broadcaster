@@ -16,7 +16,9 @@ class ChannelPool {
   addChannel(channel) {
     Log(tag, channel, 'Added to channel pool.')
     this.queue.push(channel)
-    channel.stage()
+    channel.stage().then(() => {
+      Log(tag, null, '')
+    })
   }
   broadcast() {
     this.queue.forEach((channel) => channel.stage())

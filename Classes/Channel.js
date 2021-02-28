@@ -29,7 +29,7 @@ function Channel(channel) {
     Log(tag, channel, 'Segmenter added to SegmenterPool')
 
   }
-
+  console.log(channel.paths)
   channel.paths.forEach((path) =>{
 
     var x = 0
