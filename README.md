@@ -32,6 +32,13 @@ Define your channels in a `.json` file:
 }]
 ``` 
 
+The `type` specifies the playlist type:
+* `shuffle`: will shuffle the files and play them in a random order.
+* `alphabetical`: will play the files back in alphabetical order.
+* `tv`: will look for S##E## codes in the file name and create a playlist cycling throw shows and starting each of them from the first episode. Provide paths for multiple TV shows to use this.
+
+The `name` is a human readable name for the channel and the `slug` specifies the directory name the channel.
+
 Start your server:
 ```
 node Broadcaster.js ChannelList.json
