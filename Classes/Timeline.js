@@ -1,6 +1,5 @@
 const Log = require('../Utilities/Log.js')
-const path = require('path')
-const tag = path.basename(__filename)
+const tag = __filename.split('/').pop()
 
 function Timeline(startTime, started) {
 

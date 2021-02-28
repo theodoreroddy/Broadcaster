@@ -1,25 +1,23 @@
 const Bash = require('child_process').execSync
 const Log = require('./Log.js')
-const path = require('path')
-const tag = path.basename(__filename)
+const tag = __filename.split('/').pop()
 
 var pool = null
-
-module.exports = () => {
-  return pool ? pool : pool = new SegmenterPool()
-}
 
 class SegmenterPool {
 
   constructor(queue) {
-    this.queue = []
     Log(tag, null, 'Segmenter Pool created.')
+    this.queue = []
   }
 
   addSegmenter(segmenter) {
-    this.queue.push(segmenter)
-    segmenter.start()
-    Log(tag, null, 'Added to the segmenter pool.')
+    return new Promise((resolve, reject) => {
+      segmenter.start()
+      this.queue.push(segmenter)
+      Log(tag, null, 'Added to the segmenter pool.')
+      resolve()
+    })
   }
 
   flush() {
@@ -29,4 +27,8 @@ class SegmenterPool {
     Bash('mv static channels/ &')
   }
 
+}
+
+module.exports = () => {
+  return pool ? pool : pool = new SegmenterPool()
 }

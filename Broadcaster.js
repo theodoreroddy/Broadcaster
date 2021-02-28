@@ -1,8 +1,7 @@
 const ChannelPool = require('./Utilities/ChannelPool.js')
 const { Channel } = require('./Classes/Channel.js')
 const Log = require('./Utilities/Log.js')
-const path = require('path')
-const tag = path.basename(__filename)
+const tag = __filename.split('/').pop()
 const FS = require('fs')
 
 try {
@@ -11,7 +10,8 @@ try {
   var channels = FS.readFileSync(process.argv[2])
   try {
     channels = JSON.parse(channels)
-    Log(tag, null, `Found ${channels.length} channel definitions.`)
+    Log(tag, null, `Found ${channels.length} channel definitions:`)
+    console.log(channels)
     channels.forEach((item) => {
       const channel = new Channel(item)
       ChannelPool().addChannel(channel)

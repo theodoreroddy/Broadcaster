@@ -1,6 +1,6 @@
 [{
-  "type": "default",
-  "title": "Static",
+  "type": "shuffle",
+  "name": "Static",
   "slug": "static",
   "paths": [
     "./Webapp/channels/static"

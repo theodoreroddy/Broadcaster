@@ -4,8 +4,8 @@ const { Segmenter } = require('../Classes/Segmenter.js')
 const Bash = require('child_process').execSync
 const { Timeline } = require('./Timeline.js')
 const Log = require('../Utilities/Log.js')
-const path = require('path')
-const tag = path.basename(__filename)
+const tag = __filename.split('/').pop()
+
 
 function Channel(channel) {
 
@@ -13,23 +13,22 @@ function Channel(channel) {
 
   this.timeline = new Timeline()
   this.type = channel.type
-  this.name = channel.title
+  this.name = channel.name
   this.slug = channel.slug
   this.queue = []
   this.currentPlaylistIndex = -1
 
-  this.stage = async () => {
-    this.currentPlaylistIndex++
-    SegmenterPool().addSegmenter(new Segmenter(this))
+  this.stage = (segmenter) => {
+
+    this.currentPlaylistIndex = this.currentPlaylistIndex + 1
+    SegmenterPool().addSegmenter(segmenter)
       .then(this.timeline.start)
       .catch(err => {
-        Log(tag, channel, `Error adding segmenter to pool: ${err}`)
+        Log(tag, this, `Error adding segmenter to pool: ${err}`)
       })
 
-    Log(tag, channel, 'Segmenter added to SegmenterPool')
-
   }
-  console.log(channel.paths)
+
   channel.paths.forEach((path) =>{
 
     var x = 0
@@ -39,13 +38,13 @@ function Channel(channel) {
       if (Format.isSupported(file)) this.queue.push(file)
       x++
     })
-    Log(tag, channel, `Found ${x} supported videos in ${path}`)
+    Log(tag, channel, `Found ${x} files in ${path}`)
 
     if (channel.type == 'shuffle') this.queue.sort(() => Math.random() - 0.5)
 
   })
 
-  Log(tag, channel, `Completed initializing ${channel.type} channel "${channel.title}" with ${this.queue.length} items.`)
+  Log(tag, channel, `Completed initializing ${channel.type} channel "${channel.name}" with ${this.queue.length} supported videos.`)
 
 }
 

@@ -1,6 +1,6 @@
 [{
   "type": "shuffle",
-  "title": "PBS",
+  "name": "PBS",
   "slug": "pbs",
   "paths": [
     "/mnt/user/TV Shows/This Old House",

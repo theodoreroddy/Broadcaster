@@ -1,8 +1,8 @@
 const SegmenterPool = require('../Utilities/SegmenterPool.js')
 const Log = require('../Utilities/Log.js')
 const FFMpeg = require('fluent-ffmpeg')
-const path = require('path')
-const tag = path.basename(__filename)
+const tag = __filename.split('/').pop()
+
 process.on('exit', SegmenterPool().flush)
 
 const { VIDEO_CODEC,
@@ -13,8 +13,7 @@ const { VIDEO_CODEC,
         HLS_SEGMENT_LENGTH_SECONDS } = process.env
 
 function FFMpegSession(channel) {
-    process.on('exit', SegmenterPool().flush)
-    const file = channel.queue[channel.currentPlaylistIndex].file
+    const file = channel.queue[channel.currentPlaylistIndex]
     const slug = channel.slug
     FFMpeg(file)
         .addOptions([
@@ -37,11 +36,11 @@ function FFMpegSession(channel) {
             Log(tag, channel, `FFMpeg started encoding ${file}.`)
         })
         .on('end', () => {
-            channel.currentPlaylistIndex++
+            channel.currentPlaylistIndex = channel.currentPlaylistIndex + 1
             Log(tag, channel, `FFMpeg finished encoding ${file} in ${(Date.now() - start)/1000} seconds.`)
         })
         .on('error', function (err, stdout, stderr) {
-            channel.currentPlaylistIndex++
+            channel.currentPlaylistIndex = channel.currentPlaylistIndex + 1
             Log(tag, channel, `FFMpeg produced an error, so we're skipping to ${file}.`)
         })
         .run()

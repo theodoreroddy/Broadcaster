@@ -1,6 +1,5 @@
 const Log = require('./Log.js')
-const path = require('path')
-const tag = path.basename(__filename)
+const tag = __filename.split('/').pop()
 
 // Checks the given file against the SUPPORTED_FORMATS list
 module.exports = {
