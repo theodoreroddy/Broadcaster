@@ -13,7 +13,7 @@ var config = FS.readFileSync('./channels.json')
 try {
 
   config = JSON.parse(config)
-  Log(`Found ${config.length} in the config.`)
+  Log(`Found ${config.length} channel definitions in the config.`)
   config.forEach((item) => {
     const channel = new Channel(item)
     ChannelPool().addChannel(channel)

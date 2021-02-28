@@ -15,11 +15,11 @@ function Channel(channel) {
 
   this.stage = () => {
     Log(`${channel.slug.toUpperCase()}: Add new Segmenter to the SegmenterPool...`)
-    SegmenterPool.addSegmenter(new Segmenter(this))
-      .then(this.timeline.start)
-      .catch(err => {
-        //
-      }) 
+    // SegmenterPool.addSegmenter(new Segmenter(this))
+    //   .then(this.timeline.start)
+    //   .catch(err => {
+    //     //
+    //   }) 
   }
 
   channel.paths.forEach((path) =>{
