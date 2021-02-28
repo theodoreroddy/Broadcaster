@@ -1,0 +1,28 @@
+# Thanks for using Broadcaster. Configure your preferences below. Be careful!
+
+# FFMpeg Setup. Use at your own risk.
+VIDEO_CODEC=h264_nvenc
+VIDEO_CRF=21
+VIDEO_FILTER=yadif
+AUDIO_CODEC=aac
+AUDIO_BITRATE=128k
+
+# Choose the length of HTTP Live Streaming .ts clips. Apple recommends 6 seconds,
+# if you have high performance storage (i.e. ramdisk) you can go lower.
+HLS_SEGMENT_LENGTH_SECONDS=10
+
+# Broadcaster routinely cleans up old files. This affects the size of the cache
+# it will maintain as a result. Lower can cause instability. 
+HLS_SEGMENT_FILE_EXPIRY_MINUTES=10
+
+# List the formats you want to pass into ffmpeg. It is recommended to only add
+# formats you know will work! Otherwise you may get errors on .NFO files for example
+SUPPORTED_FORMATS=mov,mp4,mkv,avi,ts,m2ts,webm,divx,mpg
+
+# Specify where to store the files ffmpeg generates. Storing in /tmp will keep
+# them in RAM which is recommended vs. writing to a hard disk which can be slow
+# or to an SSD which will just degrade the lifespan of the SSD.
+CACHE_DIR=/tmp
+
+# Log levels (verbose, silent)
+LOG_LEVEL=verbose

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+#container {
+  width: 800px;
+  margin: 0px auto;
+}
+video {
+  width: 800px;
+  height: 600px;
+  margin-bottom: 10px;
+  background: black;
+}
+#fullscreen {
+  float: right;
+}
+body {
+  margin: 0px;
+  background: #111111;
+  padding-top: 30px;
+}
+</style>
+<title>Tedflix TV</title>
+</head>
+<body>
+  <div id="container">
+    <video id="video" autoplay="true" muted="muted" src></video>
+    <nav>
+      <button id="mtv" class="channel">MTV Simulator</button>
+      <button id="food" class="channel">Food Network</button>
+      <button id="pbs" class="channel">PBS</button>
+      <button id="frasier" class="channel">Frasier</button>
+      <button id="startrektv" class="channel">Trek TV</button>
+      <button id="startrek" class="channel">Trek Movies</button>
+      <button id="fullscreen">Fullscreen</button>
+    </nav>
+  </div>
+  <script>
+    if (window.safari && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) {
+      var video = document.getElementById('video');
+      video.src = '/channels/static/_.m3u8';
+      document.querySelectorAll('button.channel')
+        .forEach((button) => button.addEventListener('click', () => {
+          video.src = '#';
+          video.style.background = "none";
+          video.style.backgroundImage = "url('assets/static.gif')";
+          video.addEventListener('timeupdate', () => {
+            video.style.background = "black";
+            video.style.backgroundImage = "none";
+          });
+          const channel = button.getAttribute('id');
+          video.src = `/${channel}.m3u8`;
+        }))
+      document.querySelector('button#fullscreen').addEventListener('click', (element) => {
+        video.requestFullscreen();
+      })
+      document.querySelectorAll('*')
+        .forEach((el) => el.addEventListener('mouseover', () => {
+          video.muted = false;
+        }))
+    } else {
+      var video = document.getElementById('video');
+      window.hls = new Hls();
+      window.hls.loadSource(`/channels/static/_.m3u8`);
+      window.hls.attachMedia(video);
+      video.addEventListener('click',function() {
+        video.muted = false;
+      });
+      document.querySelectorAll('button.channel')
+        .forEach((button) => button.addEventListener('click', () => {
+          video.style.background = "none";
+          video.style.backgroundImage = "url('assets/static.gif')";
+          window.hls.detachMedia(video);
+          window.hls = new Hls();
+          window.hls.addListener('hlsBufferCreated', ()=>{
+            video.style.background = "black";
+            video.style.backgroundImage = "none";
+          });
+          const channel = button.getAttribute('id');
+          window.hls.loadSource(`/${channel}.m3u8`);
+          window.hls.attachMedia(video);
+        }))
+      document.querySelector('button#fullscreen').addEventListener('click', (element) => {
+        video.requestFullscreen();
+      })
+      document.querySelectorAll('*')
+        .forEach((el) => el.addEventListener('mouseover', () => {
+          video.muted = false;
+        }))
+    }
+  </script>
+</body>
+</html>
