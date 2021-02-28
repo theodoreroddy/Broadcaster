@@ -12,7 +12,7 @@ const cleanup = () => {
   Log(tag, 'Cleaning up ...')
   try {
     Bash('rm -r ./Webapp/channels/* 2> /dev/null &')
-    Bash(`rm -r ${CACHE_DIR}/broadcast* 2> /dev/null &`)
+    Bash(`rm -r ${CACHE_DIR}/broadcaster* 2> /dev/null &`)
   } catch (e) {
     Log(tag, 'Bash emitted an error: ' + e)
   }

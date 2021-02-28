@@ -8,7 +8,7 @@ var pool = null
 class SegmenterPool {
 
   constructor(queue) {
-    Bash(`mkdir ${CACHE_DIR}/broadcast && mkdir ${CACHE_DIR}/broadcast/channels &`)
+    Bash(`mkdir ${CACHE_DIR}/broadcaster && mkdir ${CACHE_DIR}/broadcaster/channels &`)
     Log(tag, 'Segmenter Pool created.')
     this.queue = []
   }

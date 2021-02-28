@@ -19,12 +19,13 @@ class TelevisionUI {
   }
 
   start(segmenter) {
-    Log(tag, 'Starting static file server...')
-    Bash(`cp -r ${__dirname}/static ${CACHE_DIR}/broadcast/channels/\n` +
-         `cp ${__dirname}/index.html ${CACHE_DIR}/broadcast/\n` +
-         `cp ${__dirname}/static.gif ${CACHE_DIR}/broadcast/ &`)
+    
+    Bash(`cp -r ${__dirname}/static ${CACHE_DIR}/broadcaster/channels/\n` +
+         `cp ${__dirname}/index.html ${CACHE_DIR}/broadcaster/\n` +
+         `cp ${__dirname}/static.gif ${CACHE_DIR}/broadcaster/ &`)
 
-    this.app.use(express.static(`${CACHE_DIR}/broadcast/`))
+    Log(tag, 'Starting static file server...')
+    this.app.use(express.static(`${CACHE_DIR}/broadcaster`))
     this.app.listen(port, async () => {
         Log(tag, `Webapp is live at http://tv:${port}`)
     })
