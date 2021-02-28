@@ -1,0 +1,15 @@
+[{
+  "type": "shuffle",
+  "title": "PBS",
+  "slug": "pbs",
+  "paths": [
+    "/mnt/user/TV Shows/This Old House",
+    "/mnt/user/TV Shows/The New Yankee Workshop",
+    "/mnt/user/TV Shows/California's Gold",
+    "/mnt/user/TV Shows/Antiques Roadshow (US)",
+    "/mnt/user/TV Shows/Bob Ross - The Joy of Painting",
+    "/mnt/user/TV Shows/Mister Rogers Neighborhood",
+    "/mnt/user/TV Shows/Carl Sagan's Cosmos",
+    "/mnt/user/TV Shows/Keeping Up Appearances"
+  ]
+}]

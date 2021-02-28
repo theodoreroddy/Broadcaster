@@ -1,0 +1,25 @@
+{
+  "name": "broadcaster",
+  "version": "0.0.1",
+  "description": "Node app that generates and hosts HTTP Live Streams from local content using FFMpeg and ExpressJS.",
+  "main": "broadcaster.js",
+  "scripts": {
+    "test": "node broadcaster.js channels.json"
+  },
+  "author": "Theodore Roddy",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "expressjs": "^1.0.1",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs": "0.0.1-security"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theodoreroddy/Broadcaster.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theodoreroddy/Broadcaster/issues"
+  },
+  "homepage": "https://github.com/theodoreroddy/Broadcaster#readme"
+}
