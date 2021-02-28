@@ -1,4 +1,6 @@
 const Log = require('./Log.js')
+const path = require('path') 
+const tag = path.basename(__filename)
 
 // Checks the given file against the SUPPORTED_FORMATS list
 module.exports = {
@@ -7,12 +9,10 @@ module.exports = {
       try {
         const ext = file.split('.').pop()
         process.env.SUPPORTED_FORMATS.split(',').forEach((format) => {
-          if (ext == format) {
-            valid = true
-          }
+          if (ext == format) valid = true
         })
       } catch(e) {
-        Log(`ERROR: Unable to validate file format for ${file}: ${e}`)
+        Log(tag, null, `Unable to validate file format for ${file}: ${e}`)
       }
       return valid
     }

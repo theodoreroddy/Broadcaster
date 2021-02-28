@@ -1,45 +1,51 @@
+const SegmenterPool = require('../Utilities/SegmenterPool.js')
 const Format = require('../Utilities/FormatValidator.js')
-const { Timeline } = require('./Timeline.js')
+const { Segmenter } = require('../Classes/Segmenter.js')
 const Bash = require('child_process').execSync
+const { Timeline } = require('./Timeline.js')
 const Log = require('../Utilities/Log.js')
+const path = require('path') 
+const tag = path.basename(__filename)
 
 function Channel(channel) {
 
-  Log(`${channel.slug.toUpperCase()}: Building the queue...`)
-
+  Log(tag, channel, `Building the queue...`)
+  
   this.timeline = new Timeline()
   this.type = channel.type
   this.name = channel.title
   this.slug = channel.slug
   this.queue = []
+  this.currentPlaylistIndex = -1
 
-  this.stage = () => {
-    Log(`${channel.slug.toUpperCase()}: Add new Segmenter to the SegmenterPool...`)
-    // SegmenterPool.addSegmenter(new Segmenter(this))
-    //   .then(this.timeline.start)
-    //   .catch(err => {
-    //     //
-    //   }) 
+  this.stage = async () => {
+
+    SegmenterPool().addSegmenter(new Segmenter(this))
+      .then(this.timeline.start)
+      .catch(err => {
+        Log(tag, channel, `Error adding segmenter to pool: ${err}`)
+      })
+
+    Log(tag, channel, 'Segmenter added to SegmenterPool')
+
   }
 
   channel.paths.forEach((path) =>{
 
     var x = 0
-    Bash(`find "${path}"`).toString().split('\n').forEach((file) => {
+    Bash(`find "${path}" -type f`).toString().split('\n').forEach((file) => {
       const array = file.split('.')
       const last = array.pop()
-      if (array.length > 0 && last.length >= 3 && last.length <= 4) {
-        if (Format.isSupported(file)) this.queue.push(file)
-        x++
-      }
+      if (Format.isSupported(file)) this.queue.push(file)
+      x++
     })
-    Log(`${channel.slug.toUpperCase()}: Found ${x} supported videos in ${path}`)
+    Log(tag, channel, `Found ${x} supported videos in ${path}`)
 
     if (channel.type == 'shuffle') this.queue.sort(() => Math.random() - 0.5)
 
   })
 
-  Log(`${channel.slug.toUpperCase()}: Completed initializing ${channel.type} channel "${channel.title}" with ${this.queue.length} items.`)
+  Log(tag, channel, `Completed initializing ${channel.type} channel "${channel.title}" with ${this.queue.length} items.`)
 
 }
 

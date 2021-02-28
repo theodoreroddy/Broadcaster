@@ -1,0 +1,8 @@
+[{
+  "type": "default",
+  "title": "Static",
+  "slug": "static",
+  "paths": [
+    "./Webapp/channels/static"
+  ]
+}]

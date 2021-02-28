@@ -1,4 +1,6 @@
 const Log = require('./Log.js')
+const path = require('path') 
+const tag = path.basename(__filename)
 
 var pool = null
 
@@ -9,14 +11,14 @@ module.exports = () => {
 class ChannelPool {
   constructor(queue) {
     this.queue = []
-    Log(`INFO: Channel Pool created.`)
+    Log(tag, null, 'Channel Pool created.')
   }
   addChannel(channel) {
-    Log(`${channel.slug.toUpperCase()}: Added to channel pool.`)
+    Log(tag, channel, 'Added to channel pool.')
     this.queue.push(channel)
     channel.stage()
   }
   broadcast() {
-    this.queue.forEach((channel) => channel.go())
+    this.queue.forEach((channel) => channel.stage())
   }
 }
