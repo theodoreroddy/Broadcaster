@@ -42,6 +42,8 @@ function FFMpegSession(channel) {
         .on('error', function (err, stdout, stderr) {
             Log(tag, `FFMpeg produced an error, so we're skipping to ${file}.`, channel)
             Log(tag, err, channel)
+            Log(tag, stderr, channel)
+            Log(tag, stdout, channel)
             channel.currentPlaylistIndex++
             channel.segmenter.advance()
         })

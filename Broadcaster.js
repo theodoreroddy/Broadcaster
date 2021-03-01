@@ -6,7 +6,7 @@ const Log = require('./Utilities/Log.js')
 const tag = "Main"
 const fs = require('fs')
 const TelevisionUI = require('./Webapp/TelevisionUI.js')
-const { CACHE_DIR } = process.env
+const { CACHE_DIR, CHANNEL_LIST } = process.env
 
 const cleanup = () => {
   Log(tag, 'Cleaning up ...')
@@ -25,9 +25,8 @@ process.on('SIGINT', _ => {
 })
 
 try {
-  Log(tag, 'Thanks for trying Broadcaster!')
   require('dotenv').config({ path: `./config.txt` })
-  var channels = fs.readFileSync(process.argv[2])
+  var channels = fs.readFileSync(`.${CHANNEL_LIST}`)
 } catch(e) { 
   Log(tag, `Couldn't read the file you provided... ${e}`) 
 }

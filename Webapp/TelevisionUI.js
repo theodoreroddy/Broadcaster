@@ -2,14 +2,18 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const Log = require('../Utilities/Log.js')
 const tag = 'TelevisionUI'
-const { CACHE_DIR, WEB_UI_PORT, MANIFEST_UPCOMING_COUNT } = process.env
-const port = WEB_UI_PORT
+
+const { WEB_UI_PORT, 
+        MANIFEST_UPCOMING_COUNT, 
+        M3U8_MAX_AGE,
+        CACHE_DIR } = process.env
+        
 const Bash = require('child_process').execSync
 const fs = require('fs')
 const ChannelPool = require('../Utilities/ChannelPool.js')
 
 // express app that listens on specified port and handles GET requests for .m3u8 files
-// asynchronously caches the ffmpeg .m3u8 files every X seconds
+// asynchronously 'caches the ffmpeg .m3u8 files every X seconds
 
 var ui = null
 
@@ -17,7 +21,7 @@ class TelevisionUI {
 
   constructor(app,port) {
     this.app = express()
-    this.port = port
+    this.port = WEB_UI_PORT
   }
 
   start(channelPool) {
@@ -67,7 +71,9 @@ class TelevisionUI {
                   stream = stream.toString().replace(/\#EXT\-X\-DISCONTINUITY\n/g, '')
                   stream = stream.replace(/\n_/g,`\nchannels/${channel.slug}/_`)
                   res.set({
-                      'Content-Type': 'application/x-mpegURL'
+                      'Content-Type': 'application/x-mpegURL',
+                      'Cache-Control': `max-age=${M3U8_MAX_AGE}`,
+                      'Cache-Control': `min-fresh=${M3U8_MAX_AGE}`
                   })
                   res.send(stream)
 
@@ -88,8 +94,8 @@ class TelevisionUI {
 
     })
 
-    this.app.listen(port, async () => {
-        Log(tag, `Webapp is live at http://tv:${port}`)
+    this.app.listen(WEB_UI_PORT, async () => {
+        Log(tag, `Webapp is live at http://tv:${WEB_UI_PORT}`)
     })
 
   }

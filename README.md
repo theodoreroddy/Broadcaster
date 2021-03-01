@@ -20,7 +20,7 @@ cd ./Broadcaster
 npm install
 ```
 
-Define your channels in a `.json` file:
+Define your channels in a `channels.json` file:
 ```
 [{
   "type": "shuffle",
@@ -41,5 +41,5 @@ The `name` is a human readable name for the channel and the `slug` specifies the
 
 Start your server:
 ```
-node Broadcaster.js ChannelList.json
+npm start
 ```
