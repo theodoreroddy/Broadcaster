@@ -26,6 +26,7 @@ SUPPORTED_FORMATS=mov,mp4,mkv,avi,ts,m2ts,webm,divx,mpg
 # them in RAM which is recommended vs. writing to a hard disk which can be slow
 # or to an SSD which will just degrade the lifespan of the SSD.
 CACHE_DIR=/tmp
+FLUSH_INTERVAL_MINUTES=10
 
 # Log levels (verbose, silent)
 LOG_LEVEL=verbose

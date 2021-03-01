@@ -12,7 +12,7 @@ video {
   width: 800px;
   height: 600px;
   margin-bottom: 10px;
-  background: black;
+  background: url('static.gif');
 }
 #fullscreen {
   float: right;
@@ -41,7 +41,7 @@ body {
   <script>
     if (window.safari && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) {
       var video = document.getElementById('video');
-      video.src = '/channels/static/_.m3u8';
+      // video.src = '/vhs.m3u8';
       document.querySelectorAll('button.channel')
         .forEach((button) => button.addEventListener('click', () => {
           video.src = '#';
@@ -64,8 +64,8 @@ body {
     } else {
       var video = document.getElementById('video');
       window.hls = new Hls();
-      window.hls.loadSource(`/channels/static/_.m3u8`);
-      window.hls.attachMedia(video);
+      // window.hls.loadSource(`/vhs.m3u8`);
+      // window.hls.attachMedia(video);
       video.addEventListener('click',function() {
         video.muted = false;
       });

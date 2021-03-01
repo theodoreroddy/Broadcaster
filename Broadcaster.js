@@ -45,17 +45,17 @@ try {
     ChannelPool().addChannel(channel)
   })
 } catch (e) { 
-  Log(tag, 'Unable to start the segmenters' + e) 
+  Log(tag, 'Unable to start the segmenters: ' + e) 
 }
 
 try { 
-  ChannelPool().broadcast() 
-} catch (e) { 
-  Log(tag, 'Unable to start the broadcast.') 
-}
-
-try { 
-  const ui = TelevisionUI().start()
+  const ui = TelevisionUI().start(ChannelPool())
 } catch (e) { 
   Log(tag, 'Unable to start the TV UI: ' + e) 
+}
+
+try { 
+  ChannelPool().startBroadcast() 
+} catch (e) { 
+  Log(tag, 'Unable to start the broadcast: ' + e) 
 }

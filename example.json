@@ -1,0 +1,8 @@
+[{
+  "type": "shuffle",
+  "name": "VHS",
+  "slug": "vhs",
+  "paths": [
+    "./Webapp/static"
+  ]
+}]

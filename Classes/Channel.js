@@ -4,27 +4,30 @@ const { Segmenter } = require('../Classes/Segmenter.js')
 const Bash = require('child_process').execSync
 const { Timeline } = require('./Timeline.js')
 const Log = require('../Utilities/Log.js')
+const fs = require('fs')
 const tag = 'Channel'
 
 function Channel(definition) {
 
   Log(tag, `Building the queue...`, definition)
 
-  this.timeline = new Timeline()
+  this.timeline = new Timeline(this)
   this.type = definition.type
   this.name = definition.name
   this.slug = definition.slug
   this.queue = []
-  this.currentPlaylistIndex = 0
+  this.currentPlaylistIndex = -1
 
   definition.paths.forEach(path => {
     
     var x = 0
-    Bash(`find "${path}" -type f`).toString().split('\n').forEach((file) => {
+    Bash(`find "${path}" -type f`).toString().split('\n').forEach(file => {
       const array = file.split('.')
       const last = array.pop()
-      if (Format.isSupported(file)) this.queue.push(file)
-      x++
+      if (Format.isSupported(file)) {
+        this.queue.push(file)
+        x++
+      }
     })
     Log(tag, `Found ${x} supported files in ${path}`, this)
 

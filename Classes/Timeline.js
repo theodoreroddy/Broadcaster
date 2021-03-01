@@ -1,15 +1,16 @@
 const Log = require('../Utilities/Log.js')
 const tag = 'Timeline'
 
-function Timeline(startTime, started) {
+function Timeline(channel, startTime, started) {
 
   this.startTime = -1
   this.started = false
+  this.channel = channel
 
   this.start = () => {
-    started = true
-    startTime = Date.now()
-    Log(tag, 'Broadcast has begun...', channel)
+    this.started = true
+    this.startTime = Date.now()
+    Log(tag, 'Timeline started.', this.channel)
   }
 
   getTimeOffset = () => {

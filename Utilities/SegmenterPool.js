@@ -3,7 +3,9 @@ const Log = require('./Log.js')
 const { CACHE_DIR } = process.env
 const tag = 'SegmenterPool'
 
-var pool = null
+module.exports = () => {
+  return pool
+}
 
 class SegmenterPool {
 
@@ -11,6 +13,9 @@ class SegmenterPool {
     Bash(`mkdir ${CACHE_DIR}/broadcaster && mkdir ${CACHE_DIR}/broadcaster/channels &`)
     Log(tag, 'Segmenter Pool created.')
     this.queue = []
+    setInterval(async _=>{
+      this.queue.forEach(segmenter => segmenter.flush())
+    },process.env.FLUSH_INTERVAL_MINUTES*60*1000)
   }
 
   addSegmenter(segmenter) {
@@ -23,6 +28,4 @@ class SegmenterPool {
 
 }
 
-module.exports = () => {
-  return pool ? pool : pool = new SegmenterPool()
-}
+var pool = new SegmenterPool()

@@ -17,9 +17,12 @@ class ChannelPool {
     Log(tag, 'Added to channel pool.', channel)
   }
 
-  broadcast() {
-    this.queue.forEach(channel => channel.timeline.start())
+  startBroadcast() {
+    this.queue.forEach((channel) => {
+      channel.timeline.start()
+    })
   }
 
 }
+
 var pool = new ChannelPool()
