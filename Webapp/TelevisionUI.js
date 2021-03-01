@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const Log = require('../Utilities/Log.js')
 const tag = 'TelevisionUI'
+const compression = require('compression')
 
 const { WEB_UI_PORT, 
         MANIFEST_UPCOMING_COUNT, 
@@ -32,7 +33,7 @@ class TelevisionUI {
          `cp ${__dirname}/static.gif ${CACHE_DIR}/broadcaster/ &`)
 
     this.app.use(express.static(`${CACHE_DIR}/broadcaster`))
-
+    this.app.use(compression())
     this.app.get(`/manifest.json`, function(req,res){
 
         var manifest = {

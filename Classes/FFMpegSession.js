@@ -28,8 +28,7 @@ function FFMpegSession(channel) {
             `-hls_time ${HLS_SEGMENT_LENGTH_SECONDS}`,
             '-hls_flags append_list',
             '-hls_start_number_source datetime',
-            '-hls_playlist_type event',
-            '-sc_threshold 0'
+            '-hls_playlist_type event'
         ]).output(`${CACHE_DIR}/broadcaster/channels/${slug}/_.m3u8`)
         .on('start', function(err, stdout, stderr) {
             if (channel.currentPlaylistIndex == 0) channel.startTime = Date.now()

@@ -10,6 +10,7 @@
   "author": "Theodore Roddy",
   "license": "ISC",
   "dependencies": {
+    "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "expressjs": "^1.0.1",

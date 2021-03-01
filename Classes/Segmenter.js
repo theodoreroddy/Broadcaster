@@ -23,7 +23,7 @@ function Segmenter(channel) {
       this.advance()
     } else {
       this.session = new FFMpegSession(this.channel)
-      const duration = FFProbe.getDurationInMilliseconds(this.channel.queue[this.channel.currentPlaylistIndex])-FFMPEG_SEEK_AHEAD_SECONDS
+      const duration = FFProbe.getDurationInMilliseconds(this.channel.queue[this.channel.currentPlaylistIndex])
       Log(tag, `Advanced to the next track and scheduled to advance again in ${duration/1000} seconds`, channel)
       setTimeout(this.advance, duration)
     }
