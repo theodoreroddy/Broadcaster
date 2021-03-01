@@ -35,9 +35,9 @@ Define your channels in a `channels.json` file:
 The `type` specifies the playlist type:
 * `shuffle`: will shuffle the files and play them in a random order.
 * `alphabetical`: will play the files back in alphabetical order.
-* `tv`: will look for S##E## codes in the file name and create a playlist cycling throw shows and starting each of them from the first episode. Provide paths for multiple TV shows to use this.
+* `tv`: will look for S##E## codes in the file name and create a playlist cycling through shows, starting each of them from the first episode. Provide paths for multiple TV shows to use this. Not implemented yet, other ideas exist as well such as cadence/daily scheduling.
 
-The `name` is a human readable name for the channel and the `slug` specifies the directory name the channel.
+The `name` is a human readable name for the channel and the `slug` specifies the directory name the channel use.
 
 Start your server:
 ```

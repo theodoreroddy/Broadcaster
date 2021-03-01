@@ -73,7 +73,8 @@ class TelevisionUI {
                   res.set({
                       'Content-Type': 'application/x-mpegURL',
                       'Cache-Control': `max-age=${M3U8_MAX_AGE}`,
-                      'Cache-Control': `min-fresh=${M3U8_MAX_AGE}`
+                      'Cache-Control': `min-fresh=${M3U8_MAX_AGE}`,
+                      'Strict-Transport-Security': `max-age=${Date.now() + M3U8_MAX_AGE*1000}; includeSubDomains;  preload`
                   })
                   res.send(stream)
 
