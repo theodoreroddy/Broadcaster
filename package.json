@@ -4,7 +4,7 @@
   "description": "Node app that generates and hosts HTTP Live Streams from local content using FFMpeg and ExpressJS.",
   "main": "broadcaster.js",
   "scripts": {
-    "test": "node broadcaster.js channels.json"
+    "test": "node broadcaster.js example.json"
   },
   "author": "Theodore Roddy",
   "license": "ISC",

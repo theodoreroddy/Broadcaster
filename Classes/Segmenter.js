@@ -17,10 +17,14 @@ function Segmenter(channel) {
       Log(tag, `End of playlist reached. Starting over.`, channel)
       this.channel.currentPlaylistIndex = 0
       this.advance()
+    } else if (this.channel.currentPlaylistIndex == -1) {
+      Log(tag, `Playlist starting now...`, channel)
+      this.channel.currentPlaylistIndex++
+      this.advance()
     } else {
       this.session = new FFMpegSession(this.channel)
       const duration = FFProbe.getDurationInMilliseconds(this.channel.queue[this.channel.currentPlaylistIndex])
-      Log(tag, `Advanced to the next track and scheduled to advance in ${duration/1000} seconds`, channel)
+      Log(tag, `Advanced to the next track and scheduled to advance again in ${duration/1000} seconds`, channel)
       setTimeout(this.advance, duration)
     }
   }
