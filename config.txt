@@ -13,7 +13,7 @@ VIDEO_FILTER=yadif
 AUDIO_CODEC=aac
 AUDIO_BITRATE=128k
 DIMENSIONS=640x480
-FFMPEG_SEEK_AHEAD_SECONDS=15
+FFMPEG_SEEK_AHEAD_SECONDS=30
 
 # Choose the length of HTTP Live Streaming .ts clips. Apple recommends 6 seconds,
 # if you have high performance storage (i.e. ramdisk) you can go lower.
