@@ -5,6 +5,7 @@ const Bash = require('child_process').execSync
 const { Timeline } = require('./Timeline.js')
 const Log = require('../Utilities/Log.js')
 const fs = require('fs')
+const { CACHE_DIR, M3U8_CACHE_INTERVAL } = process.env
 const tag = 'Channel'
 
 function Channel(definition) {
@@ -17,6 +18,26 @@ function Channel(definition) {
   this.slug = definition.slug
   this.queue = []
   this.currentPlaylistIndex = -1
+  this.m3u8path = `${CACHE_DIR}/broadcaster/channels/${definition.slug}/_.m3u8`
+  this.m3u8 = ''
+
+  try {
+
+    this.updateCache = async () => {
+      fs.readFile(this.m3u8path, 'utf8', (err, data) => {
+        if (err) {
+          Log(tag, `No m3u8 yet...`, definition)
+          return
+        }
+        this.m3u8 = data
+      })
+      return
+    }
+    setInterval(this.updateCache,M3U8_CACHE_INTERVAL*1000)
+
+  } catch(err) {
+    Log(tag, `Error when setting up m3u8 caching: ` + err)
+  }
 
   definition.paths.forEach(path => {
     

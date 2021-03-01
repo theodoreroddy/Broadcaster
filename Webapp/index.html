@@ -12,7 +12,7 @@ video {
   width: 800px;
   height: 600px;
   margin-bottom: 10px;
-  background: url('static.gif');
+  background: black;
 }
 #fullscreen {
   float: right;
@@ -41,12 +41,12 @@ body {
   <script>
     if (window.safari && navigator.userAgent.toLowerCase().indexOf('chrome') == -1) {
       var video = document.getElementById('video');
-      // video.src = '/vhs.m3u8';
+      video.src = `/channels/static/_.m3u8`;
       document.querySelectorAll('button.channel')
         .forEach((button) => button.addEventListener('click', () => {
           video.src = '#';
           video.style.background = "none";
-          video.style.backgroundImage = "url('static.gif')";
+          video.style.backgroundImage = "black";
           video.addEventListener('timeupdate', () => {
             video.style.background = "black";
             video.style.backgroundImage = "none";
@@ -64,8 +64,9 @@ body {
     } else {
       var video = document.getElementById('video');
       window.hls = new Hls();
-      // window.hls.loadSource(`/vhs.m3u8`);
-      // window.hls.attachMedia(video);
+      window.hls.config.liveDurationInfinity = true
+      window.hls.loadSource(`/channels/static/_.m3u8`);
+      window.hls.attachMedia(video);
       video.addEventListener('click',function() {
         video.muted = false;
       });
@@ -74,7 +75,9 @@ body {
           video.style.background = "none";
           video.style.backgroundImage = "url('static.gif')";
           window.hls.detachMedia(video);
+          window.hls = null
           window.hls = new Hls();
+          window.hls.config.liveDurationInfinity = true
           window.hls.addListener('hlsBufferCreated', ()=>{
             video.style.background = "black";
             video.style.backgroundImage = "none";

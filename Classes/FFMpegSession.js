@@ -8,7 +8,8 @@ const { VIDEO_CODEC,
         VIDEO_FILTER,
         AUDIO_CODEC,
         AUDIO_BITRATE,
-        HLS_SEGMENT_LENGTH_SECONDS } = process.env
+        HLS_SEGMENT_LENGTH_SECONDS,
+        DIMENSIONS } = process.env
 
 function FFMpegSession(channel) {
     const file = channel.queue[channel.currentPlaylistIndex]
@@ -17,6 +18,7 @@ function FFMpegSession(channel) {
     FFMpeg(file)
         .videoCodec(VIDEO_CODEC)
         .videoFilters([VIDEO_FILTER])
+        .size(DIMENSIONS)
         .audioCodec(AUDIO_CODEC)
         .audioBitrate(AUDIO_BITRATE)
         .audioChannels(2)

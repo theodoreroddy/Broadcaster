@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const Log = require('../Utilities/Log.js')
 const tag = 'TelevisionUI'
-const { CACHE_DIR, WEB_UI_PORT } = process.env
+const { CACHE_DIR, WEB_UI_PORT, MANIFEST_UPCOMING_COUNT } = process.env
 const port = WEB_UI_PORT
 const Bash = require('child_process').execSync
 const fs = require('fs')
@@ -24,53 +24,67 @@ class TelevisionUI {
     
     Bash(`cp -r ${__dirname}/static ${CACHE_DIR}/broadcaster/channels/\n` +
          `cp ${__dirname}/index.html ${CACHE_DIR}/broadcaster/\n` +
+         `cp ${__dirname}/favicon.ico ${CACHE_DIR}/broadcaster/\n` +
          `cp ${__dirname}/static.gif ${CACHE_DIR}/broadcaster/ &`)
 
     this.app.use(express.static(`${CACHE_DIR}/broadcaster`))
 
     this.app.get(`/manifest.json`, function(req,res){
 
-        const manifest = {
-            
+        var manifest = {
+          channels: [],
+          upcoming: []
         }
+
+        channelPool.queue.forEach(channel => {
+          if (channel.timeline.started) {
+            manifest.channels.push({
+              name: channel.name,
+              slug: channel.slug
+            })
+            if (manifest.upcoming.length <= MANIFEST_UPCOMING_COUNT) {
+
+            }
+          }
+        })
         res.send(JSON.stringify(manifest))
 
     })
 
     channelPool.queue.forEach((channel) => {
 
-        this.app.get(`/${channel.slug}.m3u8`, function(req,res){
+      this.app.get(`/${channel.slug}.m3u8`, function(req,res){
 
-            if (channel.timeline.started) {
+          if (channel.timeline.started) {
 
-                const offset = Date.now() - channel.timeline.startTime
+              const offset = Date.now() - channel.timeline.startTime
 
-                try {
-                    
-                    var stream = fs.readFileSync(`${CACHE_DIR}/broadcaster/channels/${channel.slug}/_.m3u8`)
-                    stream = stream.toString().replace(/\#EXT\-X\-PLAYLIST\-TYPE\:EVENT\n/,`#EXT-X-PLAYLIST-TYPE:EVENT\n#EXT-X-START:TIME-OFFSET=${offset/1000}\n`)
-                    stream = stream.toString().replace(/\#EXT\-X\-ENDLIST\n/g, '')
-                    stream = stream.toString().replace(/\#EXT\-X\-DISCONTINUITY\n/g, '')
-                    stream = stream.replace(/\n_/g,`\nchannels/${channel.slug}/_`)
-                    res.set({
-                        'Content-Type': 'application/x-mpegURL'
-                    })
-                    res.send(stream)
+              try {
+                  
+                  var stream = channel.m3u8
+                  stream = stream.toString().replace(/\#EXT\-X\-PLAYLIST\-TYPE\:EVENT\n/,`#EXT-X-PLAYLIST-TYPE:EVENT\n#EXT-X-START:TIME-OFFSET=${offset/1000}\n`)
+                  stream = stream.toString().replace(/\#EXT\-X\-ENDLIST\n/g, '')
+                  stream = stream.toString().replace(/\#EXT\-X\-DISCONTINUITY\n/g, '')
+                  stream = stream.replace(/\n_/g,`\nchannels/${channel.slug}/_`)
+                  res.set({
+                      'Content-Type': 'application/x-mpegURL'
+                  })
+                  res.send(stream)
 
-                } catch(e) {
-                    Log(tag, `Couldn't return m3u8:\n` + e, channel)
-                    res.statusCode = 500
-                    res.send('')
-                }
+              } catch(e) {
+                  Log(tag, `Couldn't return m3u8:\n` + e, channel)
+                  res.statusCode = 500
+                  res.send('')
+              }
 
-            } else {
+          } else {
 
-                res.statusCode = 500
-                res.send('Broadcaster HLS channel not started yet.')
+              res.statusCode = 500
+              res.send('Broadcaster HLS channel not started yet.')
 
-            }
+          }
 
-        })
+      })
 
     })
 

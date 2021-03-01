@@ -4,7 +4,7 @@ const Log = require('../Utilities/Log.js')
 const { FFMpegSession } = require('./FFMpegSession.js')
 const FFProbe = require('../Utilities/FFProbe.js')
 const tag = 'Segmenter'
-const { CACHE_DIR } = process.env
+const { CACHE_DIR, FFMPEG_SEEK_AHEAD_SECONDS } = process.env
 
 function Segmenter(channel) {
 
@@ -23,7 +23,7 @@ function Segmenter(channel) {
       this.advance()
     } else {
       this.session = new FFMpegSession(this.channel)
-      const duration = FFProbe.getDurationInMilliseconds(this.channel.queue[this.channel.currentPlaylistIndex])
+      const duration = FFProbe.getDurationInMilliseconds(this.channel.queue[this.channel.currentPlaylistIndex])-FFMPEG_SEEK_AHEAD_SECONDS
       Log(tag, `Advanced to the next track and scheduled to advance again in ${duration/1000} seconds`, channel)
       setTimeout(this.advance, duration)
     }
@@ -31,7 +31,8 @@ function Segmenter(channel) {
   this.advance()
 
   this.flush = () => {
-    Bash(`find ${CACHE_DIR}/broadcaster/channels/${this.channel.slug}/ -type f -mmin +10 -delete &`)
+    Bash(`find ${CACHE_DIR}/broadcaster/channels/${this.channel.slug}/ -type f -iname *.ts -mmin +${process.env.HLS_SEGMENT_FILE_EXPIRY_MINUTES} -delete &`)
+    Log(tag, `Flushed segments older than ${process.env.HLS_SEGMENT_FILE_EXPIRY_MINUTES} minutes.`, channel)
   }
 
   return {
